@@ -25,7 +25,8 @@ public class TreasureMap {
     }
 
     public void moveAdventurer() {
-       adventurer.advance();
+
+       adventurer.executeMovements();
     }
 
     public List<Treasure> findTreasure() {

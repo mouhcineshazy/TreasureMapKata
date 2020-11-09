@@ -9,5 +9,4 @@ import lombok.Setter;
 @Setter
 public class Treasure {
     Position position;
-    int treasureCount;
 }

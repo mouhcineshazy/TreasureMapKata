@@ -1,5 +1,6 @@
 package com.treasure.domain;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,24 +14,22 @@ public class Adventurer {
     String adventurerName;
     String orientation;
     String movements;
+    int treasuresCollected;
 
 
-    void executeMovements() {
-        for (int i = 0; i < movements.length(); i++) {
-            if(movements.charAt(i) == 'D' || movements.charAt(i) == 'G'){
-               makeATurn(movements.charAt(i));
-            }else if(movements.charAt(i) == 'A'){
-                advance();
-            }
-        }
+    Position advance(int horizontalSize, int verticalSize, char movement) {
+        if (movement == 'D' || movement == 'G')
+            makeATurn(movement);
+        Position mapSize = new Position(horizontalSize, verticalSize);
+        MovementStrategy movementStrategy = createMovementStrategy();
+        return movementStrategy.move(position, mapSize);
     }
 
-    private void advance(){
-        MovementStrategy movementSrategy = createMovementStrategy();
-        position = movementSrategy.move(position);
+    void collectTreasure() {
+        ++treasuresCollected;
     }
 
-    private void makeATurn(char movement){
+    private void makeATurn(char movement) {
         if (movement == 'D') {
             switch (orientation) {
                 case "S":
@@ -53,12 +52,15 @@ public class Adventurer {
     }
 
     private MovementStrategy createMovementStrategy() {
-        if (orientation.equals("S"))
-            return new OrientationSouthStrategy();
-        else if (orientation.equals("N"))
-            return new OrientationNorthStrategy();
-        else if (orientation.equals("E"))
-            return new OrientationEastStrategy();
-        return new OrientationWestStrategy();
+        switch (orientation) {
+            case "S":
+                return new OrientationSouthStrategy();
+            case "N":
+                return new OrientationNorthStrategy();
+            case "E":
+                return new OrientationEastStrategy();
+            default:
+                return new OrientationWestStrategy();
+        }
     }
 }

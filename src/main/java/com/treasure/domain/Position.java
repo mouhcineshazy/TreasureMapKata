@@ -13,7 +13,7 @@ import java.util.Objects;
 @AllArgsConstructor
 public class Position {
 
-    int horizantalPosition;
+    int horizontalPosition;
     int verticalPosition;
 
     @Override
@@ -21,20 +21,20 @@ public class Position {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Position position = (Position) o;
-        return horizantalPosition == position.horizantalPosition &&
+        return horizontalPosition == position.horizontalPosition &&
                 verticalPosition == position.verticalPosition;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(horizantalPosition, verticalPosition);
+        return Objects.hash(horizontalPosition, verticalPosition);
     }
 
     @Override
     public String toString() {
         return "Position{" +
-                "horizantalPosition=" + horizantalPosition +
-                ", verticalPosition=" + verticalPosition +
+                "horizontal Position=" + horizontalPosition +
+                ", vertical Position=" + verticalPosition +
                 '}';
     }
 }

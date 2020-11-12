@@ -1,6 +1,5 @@
 package com.treasure.domain;
 
-import javafx.geometry.Pos;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -16,11 +15,19 @@ public class TreasureMap {
     int verticalSize;
     Adventurer adventurer;
     List<Treasure> treasures;
+    List<Mountain> mountains;
 
     public TreasureMap(int horizontalSize, int verticalSize, Adventurer adventurer) {
         this.horizontalSize = horizontalSize;
         this.verticalSize = verticalSize;
         this.adventurer = adventurer;
+    }
+
+    public TreasureMap(int horizontalSize, int verticalSize, Adventurer adventurer, List<Treasure> treasures) {
+        this.horizontalSize = horizontalSize;
+        this.verticalSize = verticalSize;
+        this.adventurer = adventurer;
+        this.treasures = treasures;
     }
 
     public void moveAdventurer() {
@@ -30,9 +37,20 @@ public class TreasureMap {
             if (!nextPosition.equals(adventurer.getPosition())) {
                 lookForTreasureToCollect(nextPosition);
             }
-            adventurer.setPosition(nextPosition);
-
+            if (!nextPositionHasMountain(nextPosition))
+                adventurer.setPosition(nextPosition);
         }
+    }
+
+    private boolean nextPositionHasMountain(Position nextPosition) {
+        if (mountains != null) {
+            List<Mountain> mountainsInPosition = mountains
+                    .stream()
+                    .filter(mountain -> mountain.getPosition().equals(nextPosition))
+                    .collect(Collectors.toList());
+            return mountainsInPosition.size() > 0;
+        }
+        return false;
     }
 
     private void lookForTreasureToCollect(Position position) {
@@ -42,7 +60,6 @@ public class TreasureMap {
                 adventurer.collectTreasure();
                 treasures.remove(treasuresInCurrentPosition.get(0));
             }
-            ;
         }
     }
 

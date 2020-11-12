@@ -1,9 +1,5 @@
-import com.treasure.domain.Adventurer;
-import com.treasure.domain.Position;
-import com.treasure.domain.Treasure;
-import com.treasure.domain.TreasureMap;
+import com.treasure.domain.*;
 import de.bechte.junit.runners.context.HierarchicalContextRunner;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -259,7 +255,7 @@ public class TreasureMapTest {
             TreasureMap treasureMap = new TreasureMap(horizontalSize, verticalSize, adventurerIbra, treasureList);
             treasureMap.moveAdventurer();
             assertEquals(3, treasureMap.getAdventurer().getTreasuresCollected());
-            assertEquals(2,treasureMap.getTreasures().size());
+            assertEquals(2, treasureMap.getTreasures().size());
         }
 
         private List<Treasure> getTreasures() {
@@ -276,6 +272,51 @@ public class TreasureMapTest {
             treasureList.add(treasure5);
             return treasureList;
         }
+    }
+
+    @Test
+    public void adventurer_is_blocked_in_position_given_next_position_has_mountain() {
+
+        List<Treasure> treasures = new ArrayList<>();
+        Mountain mountain = new Mountain(new Position(1,0));
+        List<Mountain> mountains = new ArrayList<>();
+        mountains.add(mountain);
+        Adventurer adventurerIbra = new Adventurer(POSITION, "Ibra", "N", "A", 0);
+        TreasureMap treasureMap = new TreasureMap(horizontalSize, verticalSize, adventurerIbra,treasures, mountains);
+        treasureMap.moveAdventurer();
+        Position newPosition = new Position(1, 1);
+        assertEquals(newPosition, treasureMap.getAdventurer().getPosition());
+        assertEquals("N", treasureMap.getAdventurer().getOrientation());
+    }
+
+    @Test
+    public void adventurer_is_blocked_in_position_and_changes_orientation_given_next_position_has_mountain_and_turns_right() {
+
+        List<Treasure> treasures = new ArrayList<>();
+        Mountain mountain = new Mountain(new Position(2,1));
+        List<Mountain> mountains = new ArrayList<>();
+        mountains.add(mountain);
+        Adventurer adventurerIbra = new Adventurer(POSITION, "Ibra", "N", "D", 0);
+        TreasureMap treasureMap = new TreasureMap(horizontalSize, verticalSize, adventurerIbra,treasures, mountains);
+        treasureMap.moveAdventurer();
+        Position newPosition = new Position(1, 1);
+        assertEquals(newPosition, treasureMap.getAdventurer().getPosition());
+        assertEquals("E", treasureMap.getAdventurer().getOrientation());
+    }
+
+    @Test
+    public void adventurer_is_blocked_in_position_and_changes_orientation_given_next_position_has_mountain_and_turns_left() {
+
+        List<Treasure> treasures = new ArrayList<>();
+        Mountain mountain = new Mountain(new Position(0,1));
+        List<Mountain> mountains = new ArrayList<>();
+        mountains.add(mountain);
+        Adventurer adventurerIbra = new Adventurer(POSITION, "Ibra", "N", "G", 0);
+        TreasureMap treasureMap = new TreasureMap(horizontalSize, verticalSize, adventurerIbra,treasures, mountains);
+        treasureMap.moveAdventurer();
+        Position newPosition = new Position(1, 1);
+        assertEquals(newPosition, treasureMap.getAdventurer().getPosition());
+        assertEquals("O", treasureMap.getAdventurer().getOrientation());
     }
 
 
